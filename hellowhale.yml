@@ -5,7 +5,7 @@ metadata:
   name: hello-blue-whale
   namespace: app-ns
 spec:
-  replicas: 5
+  replicas: 1
   selector:
     matchLabels:
       app: hello-whale-app
@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
       - name: hello-whale-container
-        image: hellowhale:latest
+        image: nashadabdulrahiman/hellowhale:latest
         imagePullPolicy: Always
         ports:
         - containerPort: 80
