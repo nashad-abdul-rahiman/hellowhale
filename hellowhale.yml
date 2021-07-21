@@ -23,7 +23,7 @@ spec:
     spec:
       containers:
       - name: hello-whale-container
-        image: nginx:latest
+        image: hellowhale:latest
         imagePullPolicy: Always
         ports:
         - containerPort: 80
