@@ -35,6 +35,6 @@ spec:
     version: blue
   type: NodePort
   ports:
-  - nodePort: 31113
+  - nodePort: 30003
     port: 80
     targetPort: 80
