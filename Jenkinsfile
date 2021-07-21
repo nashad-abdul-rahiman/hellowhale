@@ -37,6 +37,7 @@ spec:
         stage("Build image") {
           steps {
             sh 'docker build -t nashadabdulrahiman/hellowhale:${BUILD_ID} .'
+            sh 'docker tag nashadabdulrahiman/hellowhale:${BUILD_ID} nashadabdulrahiman/hellowhale:latest'
           }
         }
         stage("Push image") {
@@ -45,6 +46,7 @@ spec:
               sh 'docker login -u $USERNAME -p $PASSWORD'
             }
             sh 'docker push nashadabdulrahiman/hellowhale:${BUILD_ID}'
+            sh 'docker push nashadabdulrahiman/hellowhale:latest'
           }
         }
       }
@@ -79,16 +81,13 @@ spec:
       }
       steps {
         git 'https://github.com/nashad-abdul-rahiman/hellowhale.git'
-        withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-              sh 'docker login -u $USERNAME -p $PASSWORD'
-              sh 'cat ~/.docker/config.json'
-        }
         withCredentials([file(credentialsId: 'k3', variable: 'KUBECRED')]) {
             sh 'mkdir -pv /root/.kube/'
             sh 'cat $KUBECRED > ~/.kube/config'
-            sh 'kubectl create secret generic regcred --from-file=.dockerconfigjson=~/.docker/config.json --type=kubernetes.io/dockerconfigjson'
-            sh 'kubectl apply -f hellowhale.yml'
-      }
+        }
+        
+        sh 'kubectl apply -f hellowhale.yml'
+      
       }
           
     }
